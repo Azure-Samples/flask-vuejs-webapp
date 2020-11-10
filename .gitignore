@@ -127,3 +127,34 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+*.pyc
+.cache
+.mypy_cache\
+.env
+venv/
+
+/dist
+.coverage
+.pytest_cache/
+htmlcov/
+
+.DS_Store
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+selenium-debug.log
+package-lock.json
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*security-sgps.py
+*security_backend.py
+
+node_modules/*

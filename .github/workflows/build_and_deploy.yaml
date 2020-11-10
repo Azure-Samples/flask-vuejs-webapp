@@ -1,0 +1,81 @@
+# For more info on Python, GitHub Actions, and Azure App Service 
+# please head to https://aka.ms/python-webapps-actions
+
+name: Build and deploy Flask + Vue.js app to Azure App Service
+
+on:
+  push:
+    branches: 
+      - master
+
+env:
+  WEBAPP_NAME: 'freeberg-flask-app'  # Replace with the name of your Azure web app
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.6
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12
+
+    - name: Install and build Vue.js project
+      run: |
+        npm install
+        npm run build
+
+    - name: Create and start virtual environment
+      run: |
+        python3 -m venv venv
+        source venv/bin/activate
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: test with PyTest
+      run: pytest --cov=app --cov-report=xml
+
+    - name: Upload artifact for deployment jobs
+      uses: actions/upload-artifact@v2
+      with:
+        name: python-app
+        path: |
+          . 
+          !node_modules/
+          !venv/
+  
+  deploy-to-webapp:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: python-app
+          path: .
+
+      - name: Log in to Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_SERVICE_PRINCIPAL }}
+    
+      - name: Disable static collection and set migration command on App Service
+        uses: Azure/appservice-settings@v1
+        with:  
+          app-name: ${{ env.WEBAPP_NAME }}
+          app-settings-json: '[{ "name": "SCM_DO_BUILD_DURING_DEPLOYMENT", "value": "true" }]'
+
+      - name: Deploy to App Service
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.WEBAPP_NAME}}
+
