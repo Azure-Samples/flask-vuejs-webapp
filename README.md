@@ -5,6 +5,7 @@
 ![Vue Logo](/docs/vue-logo.png "Vue Logo") ![Flask Logo](/docs/flask-logo.png "Flask Logo")
 
 ## Features
+
 * Minimal Flask 1.0 App
 * [Flask-RestPlus](http://flask-restplus.readthedocs.io) API with class-based secure resource routing
 * Starter [PyTest](http://pytest.org) test suite
