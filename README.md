@@ -13,10 +13,6 @@
 * [Vue Router](https://router.vuejs.org/)
 * [Axios](https://github.com/axios/axios/) for backend communication
 * Sample Vue [Filters](https://vuejs.org/v2/guide/filters.html)
-* Heroku Configuration with one-click deployment + Gunicorn
-
-## Demo
-[Live Demo](https://flask-vuejs-template.herokuapp.com/#/api)
 
 ## Alternatives
 
@@ -24,16 +20,6 @@ If this setup is not what you are looking for, here are some similar projects:
 
 * [oleg-agapov/flask-vue-spa](https://github.com/oleg-agapov/flask-vue-spa)
 * [testdrivenio/flask-vue-crud](https://github.com/testdrivenio/flask-vue-crud)
-
-#### Old Template
-
-This template was updated to use a flatter folder structure and use yarn instead of npm.
-You can now run `yarn serve` as well as other yarn commands from the template root directory.
-The old template will be kept in the [npm-template branch](https://github.com/gtalarico/flask-vuejs-template/tree/npm-template) but will not be maintained. 
-
-#### Django
-
-Prefer Django? Checkout the [gtalarico/django-vue-template](https://github.com/gtalarico/django-vue-template)
 
 ## Template Structure
 
@@ -69,7 +55,6 @@ The Vue instance is preconfigured with Filters, Vue-Router, Vuex; each of these 
 | `/public/static`     | Static Assets                              |
 | `/dist/`             | Bundled Assets Output (generated at `yarn build` |
 
-
 ## Installation
 
 ##### Before you start
@@ -80,26 +65,25 @@ Before getting started, you should have the following installed and running:
 - [X] Vue Cli 3 - [instructions](https://cli.vuejs.org/guide/installation.html)
 - [X] Python 3
 - [X] Pipenv (optional)
-- [X] Heroku Cli (if deploying to Heroku)
 
 ##### Template and Dependencies
 
 * Clone this repository:
 
-	```
+	```bash
 	$ git clone https://github.com/gtalarico/flask-vuejs-template.git
 	```
 
 * Setup virtual environment, install dependencies, and activate it:
 
-	```
+	```bash
 	$ pipenv install --dev
 	$ pipenv shell
 	```
 
 * Install JS dependencies
 
-	```
+	```bash
 	$ yarn install
 	```
 
@@ -136,7 +120,6 @@ $ yarn build
 $ python run.py
 ```
 
-
 ## Production Server
 
 This template is configured to work with Heroku + Gunicorn and it's pre-configured
@@ -154,19 +137,5 @@ The python buildpack will detect the `Pipfile` and install all the python depend
 
 #### Production Sever Setup
 
-Here are the commands we need to run to get things setup on the Heroku side:
-
-	```
-	$ heroku apps:create flask-vuejs-template-demo
-	$ heroku git:remote --app flask-vuejs-template-demo
-	$ heroku buildpacks:add --index 1 heroku/nodejs
-	$ heroku buildpacks:add --index 2 heroku/python
-	$ heroku config:set FLASK_ENV=production
-	$ heroku config:set FLASK_SECRET=SuperSecretKey
-
-	$ git push heroku
-	```
-
-### Heroku deployment - One Click Deploy
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/gtalarico/flask-vuejs-template)
+- Set FLASK_ENV, FLASK_SECRET
+- set `gunicorn --bind=0.0.0.0 --timeout 600 app:app` startup command
