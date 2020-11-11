@@ -74,7 +74,7 @@ jobs:
           az configure --defaults ${{ secrets.RESOURCE_GROUP }}
           az webapp config appsettings \
             --name ${{ secrets.WEBAPP_NAME }} \
-            --settings SCM_DO_BUILD_DURING_DEPLOYMENT=true 
+            --settings SCM_DO_BUILD_DURING_DEPLOYMENT=true FLASK_ENV=production 
 
           az webapp config set \
           --name ${{ secrets.WEBAPP_NAME }} \
