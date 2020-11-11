@@ -6,10 +6,11 @@ name: Build and deploy Flask + Vue.js app to Azure App Service
 on:
   push:
     branches: 
-      - master
+      - main
 
 env:
-  WEBAPP_NAME: '<your-web-app>'  # Replace with the name of your Azure web app
+  WEBAPP_NAME: '<your-web-app>'             # Replace with the name of your Azure web app
+  RESOURCE_GROUP: '<your-resource-group>'   # Replace with the name of your Resource Group
 
 jobs:
   build-and-test:
@@ -67,12 +68,17 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_SERVICE_PRINCIPAL }}
-    
-      - name: Disable static collection and set migration command on App Service
-        uses: Azure/appservice-settings@v1
-        with:  
-          app-name: ${{ env.WEBAPP_NAME }}
-          app-settings-json: '[{ "name": "SCM_DO_BUILD_DURING_DEPLOYMENT", "value": "true" }]'
+
+      - name: Configure deployment and runtime settings on the webapp
+        run: |
+          az configure --defaults ${{ secrets.RESOURCE_GROUP }}
+          az webapp config appsettings \
+            --name ${{ secrets.WEBAPP_NAME }} \
+            --settings SCM_DO_BUILD_DURING_DEPLOYMENT=true 
+
+          az webapp config set \
+          --name ${{ secrets.WEBAPP_NAME }} \
+          --startup-file "gunicorn --bind=0.0.0.0 --timeout 600 app:app"
 
       - name: Deploy to App Service
         uses: azure/webapps-deploy@v2
