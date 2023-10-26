@@ -9,8 +9,8 @@ on:
       - main
 
 env:
-  WEBAPP_NAME: '<your-web-app>'             # Replace with the name of your Azure web app
-  RESOURCE_GROUP: '<your-resource-group>'   # Replace with the name of your Resource Group
+  WEBAPP_NAME: 'managerous'             # Replace with the name of your Azure web app
+  RESOURCE_GROUP: 'iot-monitoring'   # Replace with the name of your Resource Group
 
 jobs:
   build-and-test:
